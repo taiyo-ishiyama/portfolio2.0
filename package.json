@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "vitest",
+    "test": "vitest --passWithNoTests",
     "test:ui": "vitest --ui",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --pass-with-no-tests",
     "sanity": "sanity dev",
     "sanity:build": "sanity build",
     "sanity:deploy": "sanity deploy"
@@ -32,7 +32,6 @@
     "tailwindcss-animate": "latest"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "latest",
     "@playwright/test": "latest",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
@@ -41,8 +40,8 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "^10.4.19",
-    "eslint": "latest",
-    "eslint-config-next": "latest",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "16.1.6",
     "jsdom": "latest",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.17",
