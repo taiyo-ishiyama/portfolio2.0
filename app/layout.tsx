@@ -1,5 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
+import { StyledComponentsRegistry } from "@/components/providers/styled-components-registry";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export default function RootLayout({
   children
@@ -7,9 +9,11 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground">
-        {children}
+        <StyledComponentsRegistry>
+          <ThemeProvider>{children}</ThemeProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

@@ -28,6 +28,7 @@
     "react": "latest",
     "react-dom": "latest",
     "sanity": "latest",
+    "styled-components": "^6.3.8",
     "tailwind-merge": "latest",
     "tailwindcss-animate": "latest"
   },

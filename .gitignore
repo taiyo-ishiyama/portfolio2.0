@@ -7,3 +7,6 @@ out
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Sanity auto-generated files
+.sanity/
