@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
@@ -13,20 +13,26 @@ function AnimatedLogo() {
   const [showCat, setShowCat] = useState(false);
   const [direction, setDirection] = useState<"left" | "right">("right");
   const [animationKey, setAnimationKey] = useState(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setShowCat(true);
       setAnimationKey((prev) => prev + 1);
       // Hide cat after animation completes (2 seconds at 30fps = 60 frames)
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setShowCat(false);
         // Toggle direction for next animation
         setDirection((prev) => (prev === "right" ? "left" : "right"));
       }, 2000);
     }, 8000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   return (

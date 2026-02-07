@@ -27,7 +27,7 @@ export function SplashScreen({ onComplete, duration = 2800 }: SplashScreenProps)
   }, [duration, completeSplash]);
 
   return (
-    <AnimatePresence onExitComplete={onComplete}>
+    <AnimatePresence>
       {isVisible && (
         <motion.div
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
