@@ -7,9 +7,9 @@ type SocialLinksProps = {
 };
 
 const links = [
-  { label: "Email", href: "mailto:hello@example.com", icon: Mail },
-  { label: "GitHub", href: "https://github.com", icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: Linkedin }
+  { label: "Email", href: "taiyou04142001@gmail.com", icon: Mail },
+  { label: "GitHub", href: "https://github.com/taiyo-ishiyama", icon: Github },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/taiyo-ishiyama/", icon: Linkedin }
 ];
 
 export function SocialLinks({ className, variant = "icon" }: SocialLinksProps) {

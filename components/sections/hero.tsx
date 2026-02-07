@@ -9,10 +9,6 @@ export function HeroSection() {
     <section id="hero" className="py-16">
       <Container className="grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-5">
-          <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2 text-xs font-medium text-muted-foreground">
-            <span className="h-2 w-2 rounded-full bg-emerald-400" />
-            Open to opportunities
-          </div>
           <H1>
             Hi, I&apos;m Stitch
             <span className="block text-primary">Full Stack Software Engineer</span>

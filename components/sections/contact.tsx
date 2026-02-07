@@ -12,9 +12,6 @@ export function ContactSection() {
           Feel free to reach out if you want to collaborate or chat about product work.
         </Text>
         <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button asChild size="lg">
-            <a href="mailto:hello@example.com">Email me</a>
-          </Button>
           <SocialLinks variant="pill" />
         </div>
       </Container>
