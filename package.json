@@ -15,6 +15,7 @@
     "sanity:deploy": "sanity deploy"
   },
   "dependencies": {
+    "@lottiefiles/dotlottie-react": "^0.17.14",
     "@portabletext/react": "latest",
     "@radix-ui/react-slot": "latest",
     "@sanity/image-url": "latest",

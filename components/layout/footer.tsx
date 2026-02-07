@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="border-t border-border/70 py-8">
       <Container className="flex flex-col items-center justify-between gap-3 text-center md:flex-row">
         <Small>Built with Next.js + Sanity</Small>
-        <Small>© 2026 Stitch. All rights reserved.</Small>
+        <Small>© 2026 Taiyo Ishiyama. All rights reserved.</Small>
       </Container>
     </footer>
   );
