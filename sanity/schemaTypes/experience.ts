@@ -22,6 +22,7 @@ export const experience = defineType({
       title: "Start Date",
       type: "date",
       options: { dateFormat: "MMM YYYY" },
+      validation: (rule) => rule.required().error("Start date is required"),
     }),
     defineField({
       name: "endDate",
@@ -29,12 +30,34 @@ export const experience = defineType({
       type: "date",
       options: { dateFormat: "MMM YYYY" },
       description: "Leave empty if current position",
+      validation: (rule) =>
+        rule.custom((endDate, context) => {
+          const { isCurrent, startDate } = context.document as {
+            isCurrent?: boolean;
+            startDate?: string;
+          };
+
+          if (isCurrent && endDate) {
+            return "End date must be empty for current positions";
+          }
+
+          if (!isCurrent && !endDate) {
+            return "End date is required for past positions";
+          }
+
+          if (endDate && startDate && endDate < startDate) {
+            return "End date must be on or after start date";
+          }
+
+          return true;
+        }),
     }),
     defineField({
       name: "isCurrent",
       title: "Current Position",
       type: "boolean",
       initialValue: false,
+      description: "If checked, end date will be ignored",
     }),
     defineField({
       name: "location",
