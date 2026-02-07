@@ -49,7 +49,7 @@ export function Header() {
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            Stitch
+            Taiyo's Portfolio
           </motion.span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm md:flex">
