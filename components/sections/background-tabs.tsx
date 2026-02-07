@@ -1,71 +1,43 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Building2, GraduationCap, Briefcase } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import { H2, H3, Small, Text } from "@/components/ui/typography";
+import { urlFor } from "@/lib/sanity/image";
+import type { Experience, Education } from "@/lib/sanity/types";
 
-type TimelineEntry = {
-  period: string;
-  title: string;
-  role: string;
-  details?: string;
-  iconColor: string;
-  iconBg: string;
+type BackgroundTabsSectionProps = {
+  experiences: Experience[];
+  educations: Education[];
 };
 
-const work: TimelineEntry[] = [
-  {
-    period: "2021 - PRESENT",
-    title: "TechCorp Inc.",
-    role: "Senior Frontend Engineer",
-    details:
-      "Led the migration of legacy monolith to micro-frontends. Improved site performance by 40% and mentored junior developers. Spearheaded the adoption of new testing frameworks and CI/CD pipelines.",
-    iconColor: "text-blue-600",
-    iconBg: "bg-blue-100",
-  },
-  {
-    period: "2019 - 2021",
-    title: "Creative Agency",
-    role: "Software Developer",
-    details:
-      "Developed custom CMS solutions for 20+ clients. Integrated payment gateways and complex animations using GSAP and Three.js. Collaborated closely with designers to ensure pixel-perfect implementation.",
-    iconColor: "text-green-600",
-    iconBg: "bg-green-100",
-  },
-  {
-    period: "2018 - 2019",
-    title: "StartUp Lab",
-    role: "Junior Developer (Intern)",
-    details:
-      "Assisted in building MVP for fintech products. Implemented responsive UI components and participated in daily stand-ups.",
-    iconColor: "text-orange-600",
-    iconBg: "bg-orange-100",
-  },
+function formatDate(dateString?: string): string {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+function formatPeriod(startDate?: string, endDate?: string, isCurrent?: boolean): string {
+  const start = formatDate(startDate);
+  const end = isCurrent ? "Present" : formatDate(endDate);
+  if (!start && !end) return "";
+  if (!start) return end;
+  if (!end) return start;
+  return `${start} - ${end}`;
+}
+
+const iconColors = [
+  { color: "text-blue-600", bg: "bg-blue-100" },
+  { color: "text-green-600", bg: "bg-green-100" },
+  { color: "text-orange-600", bg: "bg-orange-100" },
+  { color: "text-purple-600", bg: "bg-purple-100" },
+  { color: "text-pink-600", bg: "bg-pink-100" },
 ];
 
-const education: TimelineEntry[] = [
-  {
-    period: "2015 - 2019",
-    title: "University of Technology",
-    role: "B.Sc. in Computer Science",
-    details: "Graduated with honors. Focus on software engineering and distributed systems.",
-    iconColor: "text-blue-600",
-    iconBg: "bg-blue-100",
-  },
-  {
-    period: "2019 - 2020",
-    title: "Online Academy",
-    role: "Full Stack Development Certificate",
-    details: "Completed intensive program covering React, Node.js, and cloud technologies.",
-    iconColor: "text-purple-600",
-    iconBg: "bg-purple-100",
-  },
-];
-
-export function BackgroundTabsSection() {
+export function BackgroundTabsSection({ experiences, educations }: BackgroundTabsSectionProps) {
   const [activeTab, setActiveTab] = useState<"work" | "education">("work");
-  const entries = activeTab === "work" ? work : education;
 
   return (
     <section id="background" className="py-16">
@@ -98,43 +70,117 @@ export function BackgroundTabsSection() {
           <div className="p-6">
             <div className="relative">
               {/* Vertical line */}
-              <div className="absolute left-[11px] top-2 bottom-2 w-px bg-border" />
+              <div className="absolute left-6 top-2 bottom-2 w-px bg-border" />
 
-              <div className="space-y-8">
-                {entries.map((entry, index) => (
-                  <div
-                    key={`${entry.title}-${entry.period}`}
-                    className="relative pl-10"
-                  >
-                    {/* Icon */}
-                    <div
-                      className={`absolute left-0 top-0 flex h-6 w-6 items-center justify-center rounded ${entry.iconBg}`}
-                    >
-                      {activeTab === "work" ? (
-                        index === 0 ? (
-                          <Building2 className={`h-3.5 w-3.5 ${entry.iconColor}`} />
-                        ) : (
-                          <Briefcase className={`h-3.5 w-3.5 ${entry.iconColor}`} />
-                        )
-                      ) : (
-                        <GraduationCap className={`h-3.5 w-3.5 ${entry.iconColor}`} />
-                      )}
-                    </div>
+              {activeTab === "work" ? (
+                <div className="space-y-6">
+                  {experiences.map((exp, index) => {
+                    const iconStyle = iconColors[index % iconColors.length];
+                    return (
+                      <div key={exp._id} className="relative pl-16">
+                        {/* Logo or Icon */}
+                        <div
+                          className={`absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg overflow-hidden ${!exp.logo ? iconStyle.bg : "bg-white border border-border"}`}
+                        >
+                          {exp.logo ? (
+                            <Image
+                              src={urlFor(exp.logo).width(80).height(80).url()}
+                              alt={`${exp.company} logo`}
+                              width={40}
+                              height={40}
+                              className="object-contain"
+                            />
+                          ) : index === 0 ? (
+                            <Building2 className={`h-5 w-5 ${iconStyle.color}`} />
+                          ) : (
+                            <Briefcase className={`h-5 w-5 ${iconStyle.color}`} />
+                          )}
+                        </div>
 
-                    {/* Content */}
-                    <div>
-                      <Small className="text-muted-foreground">{entry.period}</Small>
-                      <H3 className="mt-1 text-base font-semibold">{entry.title}</H3>
-                      <Text className="text-sm text-muted-foreground">{entry.role}</Text>
-                      {entry.details && (
-                        <Text className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                          {entry.details}
-                        </Text>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                        {/* Content */}
+                        <div>
+                          <H3 className="text-lg font-semibold leading-tight">{exp.company}</H3>
+                          <Text className="text-sm font-medium text-foreground/80">{exp.role}</Text>
+                          <Small className="text-xs text-muted-foreground">
+                            {formatPeriod(exp.startDate, exp.endDate, exp.isCurrent)}
+                            {exp.location && ` · ${exp.location}`}
+                          </Small>
+                          {exp.bullets && exp.bullets.length > 0 && (
+                            <ul className="mt-3 space-y-1.5">
+                              {exp.bullets.map((bullet, bulletIndex) => (
+                                <li
+                                  key={bulletIndex}
+                                  className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed"
+                                >
+                                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-muted-foreground/50" />
+                                  <span>{bullet}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {experiences.length === 0 && (
+                    <Text className="text-muted-foreground">No work experience added yet.</Text>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {educations.map((edu, index) => {
+                    const iconStyle = iconColors[index % iconColors.length];
+                    return (
+                      <div key={edu._id} className="relative pl-16">
+                        {/* Logo or Icon */}
+                        <div
+                          className={`absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg overflow-hidden ${!edu.logo ? iconStyle.bg : "bg-white border border-border"}`}
+                        >
+                          {edu.logo ? (
+                            <Image
+                              src={urlFor(edu.logo).width(80).height(80).url()}
+                              alt={`${edu.school} logo`}
+                              width={40}
+                              height={40}
+                              className="object-contain"
+                            />
+                          ) : (
+                            <GraduationCap className={`h-5 w-5 ${iconStyle.color}`} />
+                          )}
+                        </div>
+
+                        {/* Content */}
+                        <div>
+                          <H3 className="text-lg font-semibold leading-tight">{edu.school}</H3>
+                          <Text className="text-sm font-medium text-foreground/80">{edu.degree}</Text>
+                          <div className="flex items-center gap-2">
+                            <Small className="text-xs text-muted-foreground">
+                              {formatPeriod(edu.startDate, edu.endDate)}
+                              {edu.location && ` · ${edu.location}`}
+                            </Small>
+                            {edu.gpa && (
+                              <>
+                                <span className="text-muted-foreground/30">•</span>
+                                <Small className="text-xs text-muted-foreground">
+                                  GPA: {edu.gpa}
+                                </Small>
+                              </>
+                            )}
+                          </div>
+                          {edu.description && (
+                            <Text className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                              {edu.description}
+                            </Text>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {educations.length === 0 && (
+                    <Text className="text-muted-foreground">No education added yet.</Text>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

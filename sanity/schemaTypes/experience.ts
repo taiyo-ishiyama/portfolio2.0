@@ -12,6 +12,15 @@ export const experience = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "logo",
+      title: "Company Logo",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+      description: "Square logo recommended (e.g., 100x100)",
+    }),
+    defineField({
       name: "role",
       title: "Role / Title",
       type: "string",
@@ -66,11 +75,11 @@ export const experience = defineType({
       description: "e.g. San Francisco, CA or Remote",
     }),
     defineField({
-      name: "description",
-      title: "Description",
-      type: "text",
-      rows: 4,
-      description: "Key responsibilities and achievements",
+      name: "bullets",
+      title: "Description (Bullet Points)",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Key responsibilities and achievements as bullet points",
     }),
     defineField({
       name: "order",
