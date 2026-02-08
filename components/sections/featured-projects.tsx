@@ -20,16 +20,18 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
         </div>
         {projects.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2">
-            {projects.map((project) => (
-              <ProjectCard
-                key={project._id}
-                title={project.title}
-                description={project.shortDescription || ""}
-                tags={project.techStacks || []}
-                href={`/projects/${project.slug.current}`}
-                thumbnail={project.thumbnail}
-              />
-            ))}
+            {projects
+              .filter((project) => project.slug?.current)
+              .map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  title={project.title}
+                  description={project.shortDescription || ""}
+                  tags={project.techStacks || []}
+                  href={`/projects/${project.slug.current}`}
+                  thumbnail={project.thumbnail}
+                />
+              ))}
           </div>
         ) : (
           <Text className="text-muted-foreground">
