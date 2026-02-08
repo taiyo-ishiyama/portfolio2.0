@@ -36,3 +36,17 @@ export const educationQuery = groq`
     description
   }
 `;
+
+export const featuredProjectsQuery = groq`
+  *[_type == "project" && featured == true] | order(order asc) {
+    _id,
+    title,
+    slug,
+    thumbnail,
+    shortDescription,
+    techStacks,
+    githubUrl,
+    demoUrl,
+    liveUrl
+  }
+`;

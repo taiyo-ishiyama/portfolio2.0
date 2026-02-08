@@ -1,24 +1,14 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { ProjectCard } from "@/components/common/project-card";
-import { H2, Small } from "@/components/ui/typography";
+import { H2, Text } from "@/components/ui/typography";
+import type { Project } from "@/lib/sanity/types";
 
-const projects = [
-  {
-    title: "E-commerce Analytics Dashboard",
-    description: "Track KPIs, funnel performance, and customer cohorts in one view.",
-    tags: ["Next.js", "Postgres", "TypeScript", "Recharts"],
-    href: "/projects/analytics-dashboard"
-  },
-  {
-    title: "Real-time Collab Suite",
-    description: "Presence-enabled docs with comments, mentions, and smart search.",
-    tags: ["Next.js", "Supabase", "Redis", "Socket.io"],
-    href: "/projects/collab-suite"
-  }
-];
+type FeaturedProjectsSectionProps = {
+  projects: Project[];
+};
 
-export function FeaturedProjectsSection() {
+export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionProps) {
   return (
     <section id="projects" className="py-16">
       <Container className="space-y-8">
@@ -28,14 +18,24 @@ export function FeaturedProjectsSection() {
             View all
           </Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.title} {...project} />
-          ))}
-        </div>
-        <Small className="text-muted-foreground">
-          All projects are placeholders until Sanity is wired up.
-        </Small>
+        {projects.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2">
+            {projects.map((project) => (
+              <ProjectCard
+                key={project._id}
+                title={project.title}
+                description={project.shortDescription || ""}
+                tags={project.techStacks || []}
+                href={`/projects/${project.slug.current}`}
+                thumbnail={project.thumbnail}
+              />
+            ))}
+          </div>
+        ) : (
+          <Text className="text-muted-foreground">
+            No featured projects yet. Mark projects as &quot;Featured&quot; in Sanity Studio.
+          </Text>
+        )}
       </Container>
     </section>
   );

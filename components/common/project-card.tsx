@@ -1,12 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 import { H3, Small, Text } from "@/components/ui/typography";
+import { urlFor } from "@/lib/sanity/image";
+import type { SanityImage } from "@/lib/sanity/types";
 
 type ProjectCardProps = {
   title: string;
   description: string;
   tags: string[];
   href: string;
+  thumbnail?: SanityImage;
   className?: string;
 };
 
@@ -15,6 +19,7 @@ export function ProjectCard({
   description,
   tags,
   href,
+  thumbnail,
   className
 }: ProjectCardProps) {
   return (
@@ -25,7 +30,21 @@ export function ProjectCard({
         className
       )}
     >
-      <div className="aspect-[4/3] w-full rounded-xl bg-muted" />
+      <div className="aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted">
+        {thumbnail ? (
+          <Image
+            src={urlFor(thumbnail).width(600).height(450).url()}
+            alt={title}
+            width={600}
+            height={450}
+            className="h-full w-full object-cover transition group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+            No image
+          </div>
+        )}
+      </div>
       <div className="mt-4 flex flex-1 flex-col gap-2">
         <H3 className="text-lg">{title}</H3>
         <Text className="text-sm text-muted-foreground">{description}</Text>

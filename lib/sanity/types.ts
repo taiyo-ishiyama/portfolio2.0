@@ -44,3 +44,17 @@ export type Education = {
   description?: string;
   order?: number;
 };
+
+export type Project = {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  thumbnail?: SanityImage;
+  shortDescription?: string;
+  techStacks?: string[];
+  githubUrl?: string;
+  demoUrl?: string;
+  liveUrl?: string;
+  featured?: boolean;
+  order?: number;
+};
