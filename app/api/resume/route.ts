@@ -15,6 +15,14 @@ export async function GET() {
 
   // Fetch the PDF from Sanity and proxy it
   const response = await fetch(resumeUrl);
+
+  if (!response.ok) {
+    return NextResponse.json(
+      { error: "Failed to fetch resume from storage" },
+      { status: response.status }
+    );
+  }
+
   const pdfBuffer = await response.arrayBuffer();
 
   return new NextResponse(pdfBuffer, {
