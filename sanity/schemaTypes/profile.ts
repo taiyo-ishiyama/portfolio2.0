@@ -33,6 +33,15 @@ export const profile = defineType({
         hotspot: true,
       },
     }),
+    defineField({
+      name: "resume",
+      title: "Resume (PDF)",
+      type: "file",
+      options: {
+        accept: ".pdf",
+      },
+      description: "Upload your resume PDF",
+    }),
   ],
   preview: {
     select: {

@@ -5,7 +5,8 @@ export const profileQuery = groq`
     name,
     role,
     summary,
-    photo
+    photo,
+    "resume": { "asset": resume.asset->{ url } }
   }
 `;
 
@@ -48,5 +49,20 @@ export const featuredProjectsQuery = groq`
     githubUrl,
     demoUrl,
     liveUrl
+  }
+`;
+
+export const allProjectsQuery = groq`
+  *[_type == "project"] | order(order asc, _createdAt desc) {
+    _id,
+    title,
+    slug,
+    thumbnail,
+    shortDescription,
+    techStacks,
+    githubUrl,
+    demoUrl,
+    liveUrl,
+    featured
   }
 `;

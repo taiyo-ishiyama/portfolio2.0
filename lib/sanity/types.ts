@@ -17,6 +17,11 @@ export type Profile = {
   role: string;
   summary?: string;
   photo?: SanityImage;
+  resume?: {
+    asset: {
+      url: string;
+    };
+  };
 };
 
 export type Experience = {

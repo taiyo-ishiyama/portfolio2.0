@@ -140,7 +140,9 @@ export function Header() {
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
             <Button asChild variant="secondary" size="sm">
-              <Link href="/resume/Resume.pdf">Resume</Link>
+              <a href="/api/resume" target="_blank" rel="noopener noreferrer">
+                Resume
+              </a>
             </Button>
           </motion.div>
           <ThemeToggle />
