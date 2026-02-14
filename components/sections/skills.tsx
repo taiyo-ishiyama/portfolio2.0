@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import {
   SiNextdotjs,
@@ -97,6 +98,19 @@ const categories: Category[] = [
 
 const INITIAL_SHOW_COUNT = 4;
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  }),
+};
+
 export function SkillsSection() {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
@@ -115,9 +129,16 @@ export function SkillsSection() {
   return (
     <section id="skills" className="py-16">
       <Container className="space-y-8">
-        <H2>Technical Skills</H2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <H2>Technical Skills</H2>
+        </motion.div>
         <div className="grid gap-6 md:grid-cols-2">
-          {categories.map((category) => {
+          {categories.map((category, index) => {
             const isExpanded = expandedCategories.has(category.id);
             const hasMore = category.skills.length > INITIAL_SHOW_COUNT;
             const displayedSkills = isExpanded
@@ -126,22 +147,35 @@ export function SkillsSection() {
             const hiddenCount = category.skills.length - INITIAL_SHOW_COUNT;
 
             return (
-              <div
+              <motion.div
                 key={category.id}
+                custom={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={cardVariants}
                 className="rounded-2xl border border-border bg-card p-5 shadow-soft"
               >
                 <Small className="mb-3 uppercase tracking-[0.2em]">
                   {category.title}
                 </Small>
                 <div className="flex flex-wrap gap-2">
-                  {displayedSkills.map((skill) => (
-                    <div
+                  {displayedSkills.map((skill, skillIndex) => (
+                    <motion.div
                       key={skill.name}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        delay: index * 0.1 + skillIndex * 0.05,
+                        duration: 0.3,
+                        ease: "easeOut",
+                      }}
                       className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5 text-sm font-medium"
                     >
                       <skill.icon className="h-4 w-4" />
                       <span>{skill.name}</span>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
                 {hasMore && (
@@ -163,7 +197,7 @@ export function SkillsSection() {
                     )}
                   </button>
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </div>
