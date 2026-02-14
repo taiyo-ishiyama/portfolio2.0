@@ -66,3 +66,18 @@ export const allProjectsQuery = groq`
     featured
   }
 `;
+
+export const projectBySlugQuery = groq`
+  *[_type == "project" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    thumbnail,
+    shortDescription,
+    fullDescription,
+    techStacks,
+    githubUrl,
+    demoUrl,
+    liveUrl
+  }
+`;

@@ -56,6 +56,7 @@ export type Project = {
   slug: { current: string };
   thumbnail?: SanityImage;
   shortDescription?: string;
+  fullDescription?: string;
   techStacks?: string[];
   githubUrl?: string;
   demoUrl?: string;
