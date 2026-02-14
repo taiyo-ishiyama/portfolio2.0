@@ -22,6 +22,7 @@
     "class-variance-authority": "latest",
     "clsx": "latest",
     "framer-motion": "latest",
+    "geist": "^1.7.0",
     "lucide-react": "latest",
     "next": "latest",
     "next-sanity": "latest",

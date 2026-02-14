@@ -30,7 +30,7 @@ import {
 import { TbApi, TbTestPipe, TbNetwork } from "react-icons/tb";
 import type { IconType } from "react-icons";
 import { Container } from "@/components/layout/container";
-import { H2, Small } from "@/components/ui/typography";
+import { H2, Label, Tag } from "@/components/ui/typography";
 
 type Skill = {
   name: string;
@@ -156,9 +156,9 @@ export function SkillsSection() {
                 variants={cardVariants}
                 className="rounded-2xl border border-border bg-card p-5 shadow-soft"
               >
-                <Small className="mb-3 uppercase tracking-[0.2em]">
+                <Label className="mb-3 block">
                   {category.title}
-                </Small>
+                </Label>
                 <div className="flex flex-wrap gap-2">
                   {displayedSkills.map((skill, skillIndex) => (
                     <motion.div
@@ -171,10 +171,10 @@ export function SkillsSection() {
                         duration: 0.3,
                         ease: "easeOut",
                       }}
-                      className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5 text-sm font-medium"
+                      className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5"
                     >
                       <skill.icon className="h-4 w-4" />
-                      <span>{skill.name}</span>
+                      <Tag>{skill.name}</Tag>
                     </motion.div>
                   ))}
                 </div>

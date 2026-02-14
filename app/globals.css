@@ -15,10 +15,6 @@
   --primary-foreground: 0 0% 100%;
   --ring: 221 83% 53%;
   --accent: 210 40% 96%;
-  --font-heading: "Space Grotesk", "Satoshi", "Avenir Next", "Helvetica Neue",
-    Helvetica, Arial, sans-serif;
-  --font-body: "Source Sans 3", "IBM Plex Sans", "Avenir", "Helvetica Neue",
-    Helvetica, Arial, sans-serif;
 }
 
 .dark {
@@ -40,7 +36,7 @@ html {
 }
 
 body {
-  @apply bg-background text-foreground font-body antialiased;
+  @apply bg-background text-foreground font-sans antialiased;
   background-image:
     radial-gradient(600px 600px at 10% 0%, rgba(37, 99, 235, 0.08), transparent 60%),
     radial-gradient(400px 400px at 90% 20%, rgba(15, 23, 42, 0.06), transparent 55%);

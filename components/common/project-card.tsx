@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
-import { H3, Small, Text } from "@/components/ui/typography";
+import { H3, Tag, Text } from "@/components/ui/typography";
 import { urlFor } from "@/lib/sanity/image";
 import type { SanityImage } from "@/lib/sanity/types";
 
@@ -50,9 +50,9 @@ export function ProjectCard({
         <Text className="text-sm text-muted-foreground">{description}</Text>
         <div className="mt-auto flex flex-wrap gap-2 pt-3">
           {tags.map((tag) => (
-            <Small key={tag} className="rounded-full bg-muted px-2 py-0.5 text-xs">
+            <Tag key={tag} className="rounded-full bg-muted px-2 py-0.5 text-xs">
               {tag}
-            </Small>
+            </Tag>
           ))}
         </div>
       </div>

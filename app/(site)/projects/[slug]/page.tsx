@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Markdown from "react-markdown";
@@ -6,16 +7,33 @@ import remarkGfm from "remark-gfm";
 import { ArrowLeft, Github, ExternalLink, Play } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
-import { H1, Text } from "@/components/ui/typography";
+import { H1, Tag, Text } from "@/components/ui/typography";
 import { FadeIn, FadeInImage, StaggerContainer, StaggerItem } from "@/components/animations/motion-wrapper";
 import { sanityClient } from "@/lib/sanity/client";
 import { projectBySlugQuery } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/image";
+import { generatePageMetadata, siteConfig } from "@/lib/seo/metadata";
+import { ProjectJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import type { Project } from "@/lib/sanity/types";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await sanityClient.fetch<Project | null>(projectBySlugQuery, { slug });
+
+  if (!project) {
+    return {};
+  }
+
+  return generatePageMetadata({
+    title: project.title,
+    description: project.shortDescription,
+    path: `/projects/${project.slug.current}`,
+  });
+}
 
 export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params;
@@ -25,11 +43,32 @@ export default async function ProjectDetailPage({ params }: Props) {
     notFound();
   }
 
+  const projectUrl = `${siteConfig.url}/projects/${project.slug.current}`;
+  const thumbnailUrl = project.thumbnail
+    ? urlFor(project.thumbnail).width(1200).height(630).url()
+    : undefined;
+
   return (
-    <main className="py-16">
-      <Container className="max-w-4xl">
-        <div className="space-y-8">
-          {/* Back Button */}
+    <>
+      <ProjectJsonLd
+        name={project.title}
+        description={project.shortDescription || ""}
+        image={thumbnailUrl}
+        url={projectUrl}
+        technologies={project.techStacks}
+        sourceUrl={project.githubUrl}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: siteConfig.url },
+          { name: "Projects", url: `${siteConfig.url}/projects` },
+          { name: project.title, url: projectUrl },
+        ]}
+      />
+      <main className="py-16">
+        <Container className="max-w-4xl">
+          <div className="space-y-8">
+            {/* Back Button */}
           <FadeIn delay={0}>
             <Button asChild variant="ghost" size="sm" className="-ml-2">
               <Link href="/projects" className="flex items-center gap-2">
@@ -72,9 +111,9 @@ export default async function ProjectDetailPage({ params }: Props) {
             <StaggerContainer staggerDelay={0.05} className="flex flex-wrap gap-2">
               {project.techStacks.map((tech) => (
                 <StaggerItem key={tech}>
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                  <Tag className="rounded-full bg-primary/10 px-3 py-1 text-primary">
                     {tech}
-                  </span>
+                  </Tag>
                 </StaggerItem>
               ))}
             </StaggerContainer>
@@ -207,5 +246,6 @@ export default async function ProjectDetailPage({ params }: Props) {
         </div>
       </Container>
     </main>
+    </>
   );
 }

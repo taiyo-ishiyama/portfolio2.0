@@ -6,12 +6,14 @@ import { H1, Text } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { sanityClient } from "@/lib/sanity/client";
 import { allProjectsQuery } from "@/lib/sanity/queries";
+import { generatePageMetadata } from "@/lib/seo/metadata";
 import type { Project } from "@/lib/sanity/types";
 
-export const metadata = {
-  title: "Projects | Taiyo's Portfolio",
-  description: "Browse all my projects and work.",
-};
+export const metadata = generatePageMetadata({
+  title: "Projects",
+  description: "Browse all my projects and work including web applications, mobile apps, and more.",
+  path: "/projects",
+});
 
 export default async function ProjectsPage() {
   const projects = await sanityClient.fetch<Project[]>(allProjectsQuery);

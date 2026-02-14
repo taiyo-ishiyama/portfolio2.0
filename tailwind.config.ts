@@ -25,8 +25,10 @@ const config: Config = {
         accent: "hsl(var(--accent))"
       },
       fontFamily: {
-        heading: ["var(--font-heading)", "serif"],
-        body: ["var(--font-body)", "sans-serif"]
+        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "monospace"],
+        heading: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        body: ["var(--font-geist-sans)", "system-ui", "sans-serif"]
       },
       boxShadow: {
         soft: "0 10px 30px -20px rgba(15, 23, 42, 0.35)"

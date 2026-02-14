@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, GraduationCap, Briefcase } from "lucide-react";
 import { Container } from "@/components/layout/container";
-import { H2, H3, Small, Text } from "@/components/ui/typography";
+import { H2, H3, Text, Timestamp } from "@/components/ui/typography";
 import { urlFor } from "@/lib/sanity/image";
 import type { Experience, Education } from "@/lib/sanity/types";
 
@@ -147,10 +147,10 @@ export function BackgroundTabsSection({ experiences, educations }: BackgroundTab
                           <div>
                             <H3 className="text-lg font-semibold leading-tight">{exp.company}</H3>
                             <Text className="text-sm font-medium text-foreground/80">{exp.role}</Text>
-                            <Small className="text-xs text-muted-foreground">
+                            <Timestamp>
                               {formatPeriod(exp.startDate, exp.endDate, exp.isCurrent)}
                               {exp.location && ` · ${exp.location}`}
-                            </Small>
+                            </Timestamp>
                             {exp.bullets && exp.bullets.length > 0 && (
                               <ul className="mt-3 space-y-1.5">
                                 {exp.bullets.map((bullet, bulletIndex) => (
@@ -215,16 +215,14 @@ export function BackgroundTabsSection({ experiences, educations }: BackgroundTab
                             <H3 className="text-lg font-semibold leading-tight">{edu.school}</H3>
                             <Text className="text-sm font-medium text-foreground/80">{edu.degree}</Text>
                             <div className="flex items-center gap-2">
-                              <Small className="text-xs text-muted-foreground">
+                              <Timestamp>
                                 {formatPeriod(edu.startDate, edu.endDate)}
                                 {edu.location && ` · ${edu.location}`}
-                              </Small>
+                              </Timestamp>
                               {edu.gpa && (
                                 <>
                                   <span className="text-muted-foreground/30">•</span>
-                                  <Small className="text-xs text-muted-foreground">
-                                    GPA: {edu.gpa}
-                                  </Small>
+                                  <Timestamp>GPA: {edu.gpa}</Timestamp>
                                 </>
                               )}
                             </div>
