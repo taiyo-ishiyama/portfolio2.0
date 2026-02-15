@@ -16,10 +16,13 @@ test.describe("Resume", () => {
     await page.goto("/");
     await page.waitForTimeout(500);
 
-    // Look for resume link or button (could be either)
-    const resumeLink = page.locator('a[href*="resume"], a:has-text("Resume"), button:has-text("Resume")');
+    // Scope search to header element
+    const header = page.locator("header");
 
-    // Resume link/button should exist
+    // Look for resume link or button within header
+    const resumeLink = header.locator('a[href*="resume"], a:has-text("Resume"), button:has-text("Resume")');
+
+    // Resume link/button should exist in header
     const count = await resumeLink.count();
     expect(count).toBeGreaterThan(0);
   });

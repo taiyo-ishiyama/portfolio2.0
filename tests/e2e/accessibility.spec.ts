@@ -38,16 +38,16 @@ test.describe("Accessibility", () => {
       if (!el || el === document.body) return null;
       return {
         tagName: el.tagName.toLowerCase(),
-        hasTabIndex: el.hasAttribute("tabindex"),
+        tabIndex: el.tabIndex,
         role: el.getAttribute("role"),
       };
     });
 
-    // Should focus an interactive element (a, button, input, or element with tabindex/role)
+    // Should focus an interactive element (a, button, input, or element with non-negative tabindex/role)
     const isInteractive =
       activeElement &&
       (["a", "button", "input", "select", "textarea"].includes(activeElement.tagName) ||
-        activeElement.hasTabIndex ||
+        activeElement.tabIndex >= 0 ||
         activeElement.role === "button" ||
         activeElement.role === "link");
     expect(isInteractive).toBeTruthy();
