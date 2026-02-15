@@ -12,13 +12,17 @@ test.describe("Resume", () => {
     }
   });
 
-  test("resume link exists in hero section", async ({ page }) => {
+  test("resume link or button exists in header", async ({ page }) => {
     await page.goto("/");
+    await page.waitForTimeout(500);
 
-    // Look for resume/CV link in hero
-    const resumeLink = page.getByRole("link", { name: /resume|cv/i });
+    // Scope search to header element
+    const header = page.locator("header");
 
-    // Resume link should exist
+    // Look for resume link or button within header
+    const resumeLink = header.locator('a[href*="resume"], a:has-text("Resume"), button:has-text("Resume")');
+
+    // Resume link/button should exist in header
     const count = await resumeLink.count();
     expect(count).toBeGreaterThan(0);
   });
