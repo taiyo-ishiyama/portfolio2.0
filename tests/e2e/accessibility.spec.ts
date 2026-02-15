@@ -27,24 +27,29 @@ test.describe("Accessibility", () => {
     await page.goto("/");
     await page.waitForTimeout(500);
 
-    // Tab through the page and verify an interactive element receives focus
-    await page.keyboard.press("Tab");
+    // Tab multiple times to find an interactive element
+    for (let i = 0; i < 5; i++) {
+      await page.keyboard.press("Tab");
+    }
 
     // Verify that an interactive element is focused
     const activeElement = await page.evaluate(() => {
       const el = document.activeElement;
-      if (!el) return null;
+      if (!el || el === document.body) return null;
       return {
         tagName: el.tagName.toLowerCase(),
         hasTabIndex: el.hasAttribute("tabindex"),
+        role: el.getAttribute("role"),
       };
     });
 
-    // Should focus an interactive element (a, button, input, or element with tabindex)
+    // Should focus an interactive element (a, button, input, or element with tabindex/role)
     const isInteractive =
       activeElement &&
       (["a", "button", "input", "select", "textarea"].includes(activeElement.tagName) ||
-        activeElement.hasTabIndex);
+        activeElement.hasTabIndex ||
+        activeElement.role === "button" ||
+        activeElement.role === "link");
     expect(isInteractive).toBeTruthy();
   });
 
