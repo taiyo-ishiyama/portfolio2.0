@@ -18,8 +18,8 @@ test.describe("Resume", () => {
     // Look for resume/CV link in hero
     const resumeLink = page.getByRole("link", { name: /resume|cv/i });
 
-    // Resume link should exist (may or may not be visible depending on data)
+    // Resume link should exist
     const count = await resumeLink.count();
-    expect(count).toBeGreaterThanOrEqual(0);
+    expect(count).toBeGreaterThan(0);
   });
 });

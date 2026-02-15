@@ -88,12 +88,12 @@ pnpm sanity deploy
 ### DNS Configuration
 
 For apex domain (e.g., `taiyo.dev`):
-```
+```text
 A     @     76.76.21.21
 ```
 
 For www subdomain:
-```
+```text
 CNAME www   cname.vercel-dns.com
 ```
 
@@ -104,7 +104,7 @@ For on-demand revalidation when Sanity content changes:
 ### 1. Create Webhook Secret
 
 Generate a secret and add to Vercel env vars:
-```
+```text
 SANITY_REVALIDATE_SECRET=your-secret-here
 ```
 

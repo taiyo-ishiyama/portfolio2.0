@@ -6,7 +6,7 @@ This portfolio is built with Next.js App Router, using Server Components for dat
 
 ## Data Flow
 
-```
+```text
 Sanity CMS → GROQ Queries → Server Components → React Components → Browser
 ```
 

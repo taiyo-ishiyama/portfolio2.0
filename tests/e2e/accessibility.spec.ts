@@ -25,14 +25,27 @@ test.describe("Accessibility", () => {
 
   test("interactive elements are keyboard accessible", async ({ page }) => {
     await page.goto("/");
+    await page.waitForTimeout(500);
 
-    // Tab through the page and check something gets focused
-    await page.keyboard.press("Tab");
+    // Tab through the page and verify an interactive element receives focus
     await page.keyboard.press("Tab");
 
-    // Check that we can tab through the page without errors
-    const body = page.locator("body");
-    await expect(body).toBeVisible();
+    // Verify that an interactive element is focused
+    const activeElement = await page.evaluate(() => {
+      const el = document.activeElement;
+      if (!el) return null;
+      return {
+        tagName: el.tagName.toLowerCase(),
+        hasTabIndex: el.hasAttribute("tabindex"),
+      };
+    });
+
+    // Should focus an interactive element (a, button, input, or element with tabindex)
+    const isInteractive =
+      activeElement &&
+      (["a", "button", "input", "select", "textarea"].includes(activeElement.tagName) ||
+        activeElement.hasTabIndex);
+    expect(isInteractive).toBeTruthy();
   });
 
   test("buttons have accessible names", async ({ page }) => {

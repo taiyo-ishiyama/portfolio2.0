@@ -16,8 +16,14 @@ type BackgroundTabsSectionProps = {
 
 function formatDate(dateString?: string): string {
   if (!dateString) return "";
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  // Parse as UTC to avoid timezone shifts for date-only strings
+  const [year, month, day] = dateString.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day || 1));
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
 }
 
 function formatPeriod(startDate?: string, endDate?: string, isCurrent?: boolean): string {

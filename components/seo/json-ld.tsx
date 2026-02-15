@@ -1,5 +1,10 @@
 import { siteConfig } from "@/lib/seo/metadata";
 
+// Safely serialize JSON-LD to prevent script injection
+function safeSerialize(obj: object): string {
+  return JSON.stringify(obj).replace(/</g, "\\u003c");
+}
+
 type PersonJsonLdProps = {
   name: string;
   jobTitle: string;
@@ -31,7 +36,7 @@ export function PersonJsonLd({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: safeSerialize(jsonLd) }}
     />
   );
 }
@@ -58,7 +63,7 @@ export function WebsiteJsonLd({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: safeSerialize(jsonLd) }}
     />
   );
 }
@@ -94,7 +99,7 @@ export function ProjectJsonLd({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: safeSerialize(jsonLd) }}
     />
   );
 }
@@ -123,7 +128,7 @@ export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: safeSerialize(jsonLd) }}
     />
   );
 }
