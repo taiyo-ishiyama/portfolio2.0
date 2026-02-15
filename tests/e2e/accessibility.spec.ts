@@ -1,0 +1,71 @@
+import { test, expect } from "@playwright/test";
+
+test.describe("Accessibility", () => {
+  test("homepage has proper heading hierarchy", async ({ page }) => {
+    await page.goto("/");
+
+    // Should have at least one h1
+    const h1 = page.locator("h1");
+    await expect(h1.first()).toBeVisible();
+  });
+
+  test("images have alt text", async ({ page }) => {
+    await page.goto("/");
+
+    const images = page.locator("img");
+    const count = await images.count();
+
+    for (let i = 0; i < count; i++) {
+      const img = images.nth(i);
+      const alt = await img.getAttribute("alt");
+      // All images should have alt attribute (can be empty for decorative)
+      expect(alt).not.toBeNull();
+    }
+  });
+
+  test("interactive elements are keyboard accessible", async ({ page }) => {
+    await page.goto("/");
+    await page.waitForTimeout(500);
+
+    // Tab through the page and verify an interactive element receives focus
+    await page.keyboard.press("Tab");
+
+    // Verify that an interactive element is focused
+    const activeElement = await page.evaluate(() => {
+      const el = document.activeElement;
+      if (!el) return null;
+      return {
+        tagName: el.tagName.toLowerCase(),
+        hasTabIndex: el.hasAttribute("tabindex"),
+      };
+    });
+
+    // Should focus an interactive element (a, button, input, or element with tabindex)
+    const isInteractive =
+      activeElement &&
+      (["a", "button", "input", "select", "textarea"].includes(activeElement.tagName) ||
+        activeElement.hasTabIndex);
+    expect(isInteractive).toBeTruthy();
+  });
+
+  test("buttons have accessible names", async ({ page }) => {
+    await page.goto("/");
+    await page.waitForTimeout(500);
+
+    const buttons = page.locator("button");
+    const count = await buttons.count();
+
+    for (let i = 0; i < count; i++) {
+      const button = buttons.nth(i);
+      const isVisible = await button.isVisible();
+      if (!isVisible) continue;
+
+      const text = await button.textContent();
+      const ariaLabel = await button.getAttribute("aria-label");
+
+      // Button should have some accessible name
+      const hasAccessibleName = (text && text.trim().length > 0) || ariaLabel;
+      expect(hasAccessibleName).toBeTruthy();
+    }
+  });
+});

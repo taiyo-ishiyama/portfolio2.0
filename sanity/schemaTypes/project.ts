@@ -35,10 +35,10 @@ export const project = defineType({
     }),
     defineField({
       name: "fullDescription",
-      title: "Full Description",
-      type: "array",
-      of: [{ type: "block" }],
-      description: "Detailed description for the project detail page",
+      title: "Full Description (Markdown)",
+      type: "text",
+      rows: 20,
+      description: "Detailed description using Markdown syntax (supports headings, lists, bold, links, code blocks)",
     }),
     defineField({
       name: "techStacks",

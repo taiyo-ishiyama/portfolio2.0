@@ -92,34 +92,43 @@ function AnimatedLogo() {
   );
 }
 
-function NavLink({ href, label }: { href: string; label: string }) {
+function PillNav() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
-    <Link href={href} className="relative py-1">
-      <motion.span
-        className="relative inline-block"
-        whileHover="hover"
-        initial="initial"
-      >
-        <motion.span
-          className="inline-block"
-          variants={{
-            initial: { color: "var(--muted-foreground)" },
-            hover: { color: "var(--foreground)" },
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          {label}
-        </motion.span>
-        <motion.span
-          className="absolute -bottom-0.5 left-0 h-px w-full origin-left bg-primary"
-          variants={{
-            initial: { scaleX: 0 },
-            hover: { scaleX: 1 },
-          }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-        />
-      </motion.span>
-    </Link>
+    <nav className="hidden md:flex">
+      <div className="flex items-center rounded-full border border-border bg-muted p-1">
+        {navItems.map((item, index) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="relative px-4 py-2 text-sm font-medium"
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {hoveredIndex === index && (
+              <motion.span
+                layoutId="navPill"
+                className="absolute inset-0 rounded-full bg-background shadow-md dark:shadow-none dark:bg-foreground/10"
+                transition={{
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 20,
+                  mass: 1
+                }}
+              />
+            )}
+            <span
+              className={`relative z-10 transition-colors duration-200 ${
+                hoveredIndex === index ? "text-foreground" : "text-muted-foreground"
+              }`}
+            >
+              {item.label}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </nav>
   );
 }
 
@@ -128,11 +137,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border/40 bg-background/60 backdrop-blur-xl supports-[backdrop-filter]:bg-background/40">
       <Container className="flex h-16 items-center justify-between">
         <AnimatedLogo />
-        <nav className="hidden items-center gap-6 text-sm md:flex">
-          {navItems.map((item) => (
-            <NavLink key={item.href} href={item.href} label={item.label} />
-          ))}
-        </nav>
+        <PillNav />
         <div className="flex items-center gap-2">
           <motion.div
             whileHover={{ scale: 1.03 }}
@@ -140,7 +145,9 @@ export function Header() {
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
             <Button asChild variant="secondary" size="sm">
-              <Link href="/resume/Resume.pdf">Resume</Link>
+              <a href="/api/resume" target="_blank" rel="noopener noreferrer">
+                Resume
+              </a>
             </Button>
           </motion.div>
           <ThemeToggle />

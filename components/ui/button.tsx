@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils/cn";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   asChild?: boolean;
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "outline";
   size?: "sm" | "md" | "lg";
 };
 
@@ -13,7 +13,9 @@ const variantStyles: Record<NonNullable<ButtonProps["variant"]>, string> = {
     "bg-primary text-primary-foreground shadow-soft hover:brightness-110",
   secondary:
     "bg-card text-foreground border border-border hover:border-primary/50",
-  ghost: "bg-transparent text-foreground hover:bg-muted"
+  ghost: "bg-transparent text-foreground hover:bg-muted",
+  outline:
+    "bg-transparent text-foreground border border-border hover:bg-muted hover:border-primary/50"
 };
 
 const sizeStyles: Record<NonNullable<ButtonProps["size"]>, string> = {

@@ -4,17 +4,22 @@ import { BackgroundTabsSection } from "@/components/sections/background-tabs";
 import { SkillsSection } from "@/components/sections/skills";
 import { ContactSection } from "@/components/sections/contact";
 import { sanityClient } from "@/lib/sanity/client";
-import { profileQuery } from "@/lib/sanity/queries";
-import type { Profile } from "@/lib/sanity/types";
+import { profileQuery, experienceQuery, educationQuery, featuredProjectsQuery } from "@/lib/sanity/queries";
+import type { Profile, Experience, Education, Project } from "@/lib/sanity/types";
 
 export default async function HomePage() {
-  const profile = await sanityClient.fetch<Profile | null>(profileQuery);
+  const [profile, experiences, educations, featuredProjects] = await Promise.all([
+    sanityClient.fetch<Profile | null>(profileQuery),
+    sanityClient.fetch<Experience[]>(experienceQuery),
+    sanityClient.fetch<Education[]>(educationQuery),
+    sanityClient.fetch<Project[]>(featuredProjectsQuery),
+  ]);
 
   return (
     <div>
       <HeroSection profile={profile} />
-      <FeaturedProjectsSection />
-      <BackgroundTabsSection />
+      <FeaturedProjectsSection projects={featuredProjects} />
+      <BackgroundTabsSection experiences={experiences} educations={educations} />
       <SkillsSection />
       <ContactSection />
     </div>

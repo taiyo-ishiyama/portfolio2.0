@@ -1,41 +1,75 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Container } from "@/components/layout/container";
 import { ProjectCard } from "@/components/common/project-card";
-import { H2, Small } from "@/components/ui/typography";
+import { H2, Text } from "@/components/ui/typography";
+import type { Project } from "@/lib/sanity/types";
 
-const projects = [
-  {
-    title: "E-commerce Analytics Dashboard",
-    description: "Track KPIs, funnel performance, and customer cohorts in one view.",
-    tags: ["Next.js", "Postgres", "TypeScript", "Recharts"],
-    href: "/projects/analytics-dashboard"
-  },
-  {
-    title: "Real-time Collab Suite",
-    description: "Presence-enabled docs with comments, mentions, and smart search.",
-    tags: ["Next.js", "Supabase", "Redis", "Socket.io"],
-    href: "/projects/collab-suite"
-  }
-];
+type FeaturedProjectsSectionProps = {
+  projects: Project[];
+};
 
-export function FeaturedProjectsSection() {
+export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionProps) {
+  const validProjects = projects.filter((project) => project.slug?.current);
+
   return (
     <section id="projects" className="py-16">
       <Container className="space-y-8">
-        <div className="flex items-center justify-between">
+        <motion.div
+          className="flex items-center justify-between"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <H2>Featured Projects</H2>
-          <Link href="/projects" className="text-sm font-medium text-primary">
+          <Link href="/projects" className="text-sm font-medium text-primary hover:underline">
             View all
           </Link>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.title} {...project} />
-          ))}
-        </div>
-        <Small className="text-muted-foreground">
-          All projects are placeholders until Sanity is wired up.
-        </Small>
+        </motion.div>
+        {validProjects.length > 0 ? (
+          <motion.div
+            className="grid gap-6 md:grid-cols-2"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
+            {validProjects.map((project) => (
+              <motion.div
+                key={project._id}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, ease: "easeOut" },
+                  },
+                }}
+              >
+                <ProjectCard
+                  title={project.title}
+                  description={project.shortDescription || ""}
+                  tags={project.techStacks || []}
+                  href={`/projects/${project.slug.current}`}
+                  thumbnail={project.thumbnail}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        ) : (
+          <Text className="text-muted-foreground">
+            No featured projects yet. Mark projects as &quot;Featured&quot; in Sanity Studio.
+          </Text>
+        )}
       </Container>
     </section>
   );
