@@ -150,6 +150,17 @@ export function Header() {
               </a>
             </Button>
           </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
+            <Button asChild variant="secondary" size="sm">
+              <a href="https://daily-tech-brief.vercel.app/" target="_blank" rel="noopener noreferrer">
+                Daily Tech Brief
+              </a>
+            </Button>
+          </motion.div>
           <ThemeToggle />
         </div>
       </Container>
